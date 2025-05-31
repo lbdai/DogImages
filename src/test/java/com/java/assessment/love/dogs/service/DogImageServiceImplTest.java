@@ -65,4 +65,27 @@ class DogImageServiceImplTest {
     List<DogImage> result = dogImageService.getImages(null, null, null);
     Assertions.assertEquals("1", result.getFirst().getId());
   }
+
+  @Test
+  void getRandomImagesTest() {
+    DogImage[] dogImages = new DogImage[1];
+    DogImage dogImage = new DogImage();
+    dogImage.setId("1");
+    dogImages[0] = dogImage;
+    String url = apiUrl + IMAGE_ENDPOINT + "/search?limit=" + 1;
+    when(restTemplate.get(url, null, DogImage[].class)).thenReturn(dogImages);
+    List<DogImage> result = dogImageService.getRandomImages(1);
+    Assertions.assertEquals("1", result.getFirst().getId());
+  }
+
+  @Test
+  void getImageByIdTest() {
+    DogImage dogImage = new DogImage();
+    dogImage.setId("1");
+    dogImage.setUrl("https://cdn2.thecatapi.com/images/xxBaNrfM0.jpg");
+    String url = apiUrl + IMAGE_ENDPOINT + "/1";
+    when(restTemplate.get(url, null, DogImage.class)).thenReturn(dogImage);
+    when(restTemplate.get(dogImage.getUrl(), null, byte[].class)).thenReturn(new byte[100]);
+    Assertions.assertNotNull(dogImageService.getImageById("1"));
+  }
 }

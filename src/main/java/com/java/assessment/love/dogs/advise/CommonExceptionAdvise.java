@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CommonExceptionAdvise extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(CommonException.class)
-  public ResponseEntity<String> approveRequest(CommonException exception) {
+  public ResponseEntity<String> commonExceptionHandler(CommonException exception) {
     return new ResponseEntity<>(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
   }
 }
