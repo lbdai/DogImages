@@ -15,5 +15,7 @@ public interface IDogImageService {
 
     List<DogImage> getImages(Integer page, Integer limit, String order);
 
+    List<DogImage> getRandomImages(Integer counter);
+
     String getImageById(String id);
 }

@@ -57,4 +57,12 @@ public class DogImageController {
         String res = dogImageService.getImageById(imageId);
         return  ResponseEntity.ok(res);
     }
+
+    @Operation(summary = "get image view")
+    @ApiResponse(responseCode = "200", description = "response a String base64 as image")
+    @GetMapping(value = "/download/{image-id}")
+    public ResponseEntity<List<DogImage>> getRandomImages(@PathVariable(value = "counter") Integer counter) {
+        String res = dogImageService.getImageById(imageId);
+        return  ResponseEntity.ok(res);
+    }
 }

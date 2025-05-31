@@ -64,16 +64,16 @@ public class DogImageServiceImpl implements  IDogImageService {
     }
 
     @Override
-    public String getImageById(String id) {
+    public List<DogImage> getRandomImages(Integer counter) {
+        String url = apiUrl + IMAGE_ENDPOINT + "/search?limit="+counter;
+        DogImage[] response = restTemplate.get(url, null, DogImage[].class);
+        return Arrays.asList(response);
+    }
 
-        List<DogImage> dogImages = getImages(null, null, null);
-        if(CollectionUtils.isEmpty(dogImages)) {
-            return "";
-        }
-
-        DogImage dogImage = dogImages.stream().filter(item -> item.getId().equalsIgnoreCase(id)).findFirst().get();
-        //dogImage.setUrl("https://78.media.tumblr.com/2bc94b9eec2d00f5d28110ba191da896/tumblr_nyled8DYKd1qg9kado1_1280.jpg");
-        //String url = "https://78.media.tumblr.com/2bc94b9eec2d00f5d28110ba191da896/tumblr_nyled8DYKd1qg9kado1_1280.jpg";
+    @Override
+    public String getImageById(String imageId) {
+        String url = apiUrl + IMAGE_ENDPOINT + "/"+imageId;
+        DogImage dogImage = restTemplate.get(url, null, DogImage.class);
         byte[] bytes =  restTemplate.get(dogImage.getUrl(), null, byte[].class);
         return Base64.getEncoder().encodeToString(bytes);
     }
