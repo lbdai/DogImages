@@ -2,6 +2,9 @@ package com.java.assessment.love.dogs.controller;
 
 import com.java.assessment.love.dogs.rest.responseModel.Breed;
 import com.java.assessment.love.dogs.service.IBreedService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
