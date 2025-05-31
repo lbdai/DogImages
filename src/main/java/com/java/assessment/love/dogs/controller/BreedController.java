@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.version}/breed")
+@Tag(name = "Breed API", description = "Manage breeds")
 public class BreedController {
     private final IBreedService breedService;
 
@@ -21,12 +22,16 @@ public class BreedController {
         this.breedService = breedService;
     }
 
+    @Operation(summary = "get all breeds")
+    @ApiResponse(responseCode = "200", description = "retrieve all breeds")
     @GetMapping("/getAll")
     public ResponseEntity<List<Breed>> getAllBreeds() {
         List<Breed> breeds = breedService.getAllBreeds();
         return ResponseEntity.ok(breeds);
     }
 
+    @Operation(summary = "get breed by id")
+    @ApiResponse(responseCode = "200", description = "retrieve detail of breed")
     @GetMapping("/{breed-id}")
     public ResponseEntity<Breed> getBreedById(@PathVariable(name ="breed-id") String breedId) {
         Breed breed = breedService.getBreedById(breedId);
