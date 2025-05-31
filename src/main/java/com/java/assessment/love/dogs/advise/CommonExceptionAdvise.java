@@ -3,14 +3,15 @@ package com.java.assessment.love.dogs.advise;
 import com.java.assessment.love.dogs.exception.CommonException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@RestControllerAdvice
-public class CommonExceptionAdvise {
+@ControllerAdvice
+public class CommonExceptionAdvise extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(CommonException.class)
-    public ResponseEntity<String> approveRequest(CommonException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
-    }
+  @ExceptionHandler(CommonException.class)
+  public ResponseEntity<String> approveRequest(CommonException exception) {
+    return new ResponseEntity<>(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+  }
 }

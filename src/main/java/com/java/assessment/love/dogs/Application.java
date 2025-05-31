@@ -10,25 +10,23 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 @SpringBootApplication
-@PropertySources(value = {
-		@PropertySource("classpath:./application.properties")})
+@PropertySources(value = {@PropertySource("classpath:./application.properties")})
 public class Application {
 
-	@Value("${api.version}")
-	private String apiVersion;
+  @Value("${api.version}")
+  private String apiVersion;
 
-	@Bean
-	public OpenAPI apiInfo() {
-		return new OpenAPI()
-				.info(new Info()
-						.title("Dog Image API")
-						.version(apiVersion)
-						.description("API for managing dog breeds and images"));
-	}
+  @Bean
+  public OpenAPI apiInfo() {
+    return new OpenAPI()
+        .info(
+            new Info()
+                .title("Dog Image API")
+                .version(apiVersion)
+                .description("API for managing dog breeds and images"));
+  }
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
-
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 }
