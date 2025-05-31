@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -71,7 +70,7 @@ public class DogImageServiceImpl implements IDogImageService {
   public List<DogImage> getRandomImages(Integer counter) {
     String url = apiUrl + IMAGE_ENDPOINT + "/search?limit=" + counter;
     DogImage[] response = restTemplate.get(url, null, DogImage[].class);
-    if(response == null || response.length < 1) {
+    if (response == null || response.length < 1) {
       return new ArrayList<>();
     }
     return Arrays.asList(response);
