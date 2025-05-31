@@ -60,7 +60,7 @@ public class DogImageController {
 
     @Operation(summary = "get random number of images")
     @ApiResponse(responseCode = "200", description = "response a List of random Images")
-    @GetMapping(value = "/download/{image-id}")
+    @GetMapping(value = "/random-images/{counter}")
     public ResponseEntity<List<DogImage>> getRandomImages(@PathVariable(value = "counter") Integer counter) {
         List<DogImage> res = dogImageService.getRandomImages(counter);
         return  ResponseEntity.ok(res);
