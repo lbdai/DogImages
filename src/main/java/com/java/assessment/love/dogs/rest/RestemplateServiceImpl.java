@@ -1,10 +1,15 @@
 package com.java.assessment.love.dogs.rest;
 
+import com.java.assessment.love.dogs.config.ResTemplateConfig;
 import com.java.assessment.love.dogs.exception.CommonException;
 import java.io.IOException;
 import java.util.Map;
+
+import com.java.assessment.love.dogs.rest.responseModel.DogImage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +24,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class RestemplateServiceImpl {
+  @Qualifier("restTemplate")
   private final RestTemplate restTemplate;
+
+  @Autowired
+  @Qualifier("fileRestTemplate")
+  private RestTemplate fileRestTemplate;
 
   @Autowired
   public RestemplateServiceImpl(RestTemplate restTemplate) {
@@ -35,11 +45,10 @@ public class RestemplateServiceImpl {
     return restTemplate.postForObject(url, requestBody, responseType);
   }
 
-  public ResponseEntity<Void> postFile(
-      String url, MultipartFile file, Map<String, Object> queryParams) throws IOException {
+  public <T, R> R  postFile(
+      String url, MultipartFile file, Map<String, Object> queryParams, Class<R> responseType) throws IOException {
     try {
       HttpHeaders headers = new HttpHeaders();
-
       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
       MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -52,21 +61,21 @@ public class RestemplateServiceImpl {
             });
       }
 
-      ByteArrayResource fileAsResource =
-          new ByteArrayResource(file.getBytes()) {
+        Resource fileAsResource = new ByteArrayResource(file.getBytes()) {
             @Override
             public String getFilename() {
-              return file.getOriginalFilename() != null
-                  ? file.getOriginalFilename()
-                  : "upload.png"; // important to set filename!
+                return file.getOriginalFilename(); // provide filename explicitly
             }
-          };
-      body.add("file", fileAsResource);
+        };
+
+      HttpHeaders fileHeaders = new HttpHeaders();
+      fileHeaders.setContentDispositionFormData("file", file.getOriginalFilename());
+      HttpEntity<Resource> filePart = new HttpEntity<>(fileAsResource, fileHeaders);
+      body.add("file", filePart);
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-      return restTemplate.exchange(
-          url, HttpMethod.POST, requestEntity, Void.class // No response body expected
-          );
+      return fileRestTemplate.exchange(
+          url, HttpMethod.POST, requestEntity, responseType ).getBody();
 
     } catch (Exception e) {
       throw new CommonException(e);

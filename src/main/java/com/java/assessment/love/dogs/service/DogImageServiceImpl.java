@@ -38,12 +38,12 @@ public class DogImageServiceImpl implements IDogImageService {
   }
 
   @Override
-  public void uploadImage(MultipartFile file, String breedId, String subId) throws IOException {
+  public DogImage uploadImage(MultipartFile file, String breedId, String subId) throws IOException {
     String url = apiUrl + IMAGE_ENDPOINT + "/upload";
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("breed_ids", breedId);
     body.put("sub_id", subId);
-    restTemplate.postFile(url, file, body);
+    return restTemplate.postFile(url, file, body, DogImage.class);
   }
 
   @Override

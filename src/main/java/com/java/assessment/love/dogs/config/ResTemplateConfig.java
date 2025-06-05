@@ -16,8 +16,7 @@ public class ResTemplateConfig {
   @Value("${dogs.api.key}")
   private String apiKey;
 
-  @Bean
-  @RequestScope
+  @Bean(name = "restTemplate")
   public RestTemplate restTemplate() {
 
     RestTemplate restTemplate = new RestTemplate();
@@ -25,6 +24,15 @@ public class ResTemplateConfig {
     List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
     interceptors.add(new HeaderRequestInterceptor(Constant.API_HEADER, apiKey));
     interceptors.add(new HeaderRequestInterceptor("Content-Type", Constant.CONTENT_TYPE_JSON));
+    restTemplate.setInterceptors(interceptors);
+    return restTemplate;
+  }
+
+  @Bean(name = "fileRestTemplate")
+  public RestTemplate fileRestTemplate() {
+    RestTemplate restTemplate = new RestTemplate();
+    List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+    interceptors.add(new HeaderRequestInterceptor(Constant.API_HEADER, apiKey));
     restTemplate.setInterceptors(interceptors);
     return restTemplate;
   }

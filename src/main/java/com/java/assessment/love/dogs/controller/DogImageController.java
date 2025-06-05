@@ -45,13 +45,13 @@ public class DogImageController {
   @Operation(summary = "upload image")
   @ApiResponse(responseCode = "200", description = "return true if upload image successfully")
   @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<Boolean> uploadImage(
+  public ResponseEntity<DogImage> uploadImage(
       @RequestParam("file") MultipartFile file,
       @RequestParam(value = "breed-id", required = false) String breedId,
       @RequestParam(value = "sub-id", required = false) String subId)
       throws IOException {
-    dogImageService.uploadImage(file, breedId, subId);
-    return ResponseEntity.ok(true);
+    DogImage dogImage = dogImageService.uploadImage(file, breedId, subId);
+    return ResponseEntity.ok(dogImage);
   }
 
   @Operation(summary = "delete image")

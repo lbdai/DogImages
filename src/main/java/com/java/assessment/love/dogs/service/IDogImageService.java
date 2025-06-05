@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IDogImageService {
 
-  void uploadImage(MultipartFile file, String breedId, String subId) throws IOException;
+  DogImage uploadImage(MultipartFile file, String breedId, String subId) throws IOException;
 
   void deleteImagesBreedId(String imageId, String breedId);
 
